@@ -1,0 +1,12 @@
+BooleanConstant=1
+Number=2
+ID=3
+DoubleQuoteString=4
+Quote=5
+LeftPeren=6
+RightPeren=7
+Comment=8
+SPACE=9
+'\''=5
+'('=6
+')'=7
