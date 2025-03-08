@@ -9,3 +9,17 @@ export def 'build antlr' [] {
 export def 'build cli' [] {
   dotnet publish TinyLisp.Cli -c Release -r linux-x64 --self-contained false
 }
+
+export def build [] {
+  build cli
+}
+
+export def test [] {
+  tl test ./TinyLisp.Tests
+}
+
+export def format [] {
+  dotnet format
+}
+
+export def pre-commit [] { format; build; test }

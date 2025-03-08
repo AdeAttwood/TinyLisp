@@ -6,7 +6,7 @@ namespace TinyLisp.VM;
 
 public class VM
 {
-    private List<Scope> _scopes = new List<Scope> { new Scope() };
+    private readonly List<Scope> _scopes = new List<Scope> { new Scope() };
 
     public BaseValue Evaluate(string code)
     {
