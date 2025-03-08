@@ -23,6 +23,17 @@ public static class Global
         return new NullValue();
     }
 
+    [LispFunction("assert-eq")]
+    public static NullValue AssertEqual(VM vm, BaseValue left, BaseValue right)
+    {
+        if (!Equals(vm, left, right).Value)
+        {
+            throw new LispException($"Failed asserting that {left.Display()} is equal to {right.Display()}");
+        }
+
+        return new NullValue();
+    }
+
     [LispFunction("=")]
     public static BoolValue Equals(VM vm, BaseValue left, BaseValue right)
     {

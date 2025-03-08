@@ -8,4 +8,21 @@ public class StringValue : BaseValue
     {
         return $"\"{this.Value}\"";
     }
+
+    public override bool Equals(object? obj)
+    {
+        var other = obj as StringValue;
+
+        if (other == null)
+        {
+            return false;
+        }
+
+        return this.Value.Equals(other.Value);
+    }
+
+    public override int GetHashCode()
+    {
+        return this.Value.GetHashCode();
+    }
 }

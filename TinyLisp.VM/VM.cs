@@ -84,4 +84,14 @@ public class VM
     {
         _scopes.RemoveAt(_scopes.Count - 1);
     }
+
+    public List<TestFunctionValue> GetTestFunctions()
+    {
+        return _scopes.First()
+            .Values
+            .Values
+            .Where(v => v.GetType() == typeof(TestFunctionValue))
+            .Select(v => (TestFunctionValue)v)
+            .ToList();
+    }
 }

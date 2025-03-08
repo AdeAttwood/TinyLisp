@@ -1,6 +1,6 @@
 namespace TinyLisp.VM.Primitives;
 
-public class UserFunction : BaseValue
+public class UserFunctionValue : BaseValue
 {
     public required string Name { get; set; }
 

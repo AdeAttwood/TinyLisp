@@ -23,7 +23,7 @@ public class Defun : BaseValue
             throw new LispException("defun function names must be a symbol");
         }
 
-        var function = new UserFunction { Name = functionName.Value };
+        var function = this.CreateUserFunction(functionName.Value);
 
         var parameters = listValue.GetValueAt(2) as ListValue;
         if (parameters == null)
@@ -51,5 +51,10 @@ public class Defun : BaseValue
         vm.Define(function.Name, function);
 
         return new NullValue();
+    }
+
+    protected virtual UserFunctionValue CreateUserFunction(string name)
+    {
+        return new UserFunctionValue { Name = name };
     }
 }
