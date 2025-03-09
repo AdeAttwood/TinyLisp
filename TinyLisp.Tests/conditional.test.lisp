@@ -3,3 +3,11 @@
 
   (assert (= true true) "true values are equal")
   (assert (= false false) "false values are equal"))
+
+(deftest if-statements ()
+  (assert (if true true false) "I mean... this should work")
+  (assert (if false false true) "And it returns the else if its false")
+  (assert (if (= 10 10) true false) "Evaluates the condition")
+  (assert (if true (= 10 10) false) "Evaluates return true value")
+  (assert (if false false (= 10 10)) "Evaluates return false value"))
+
