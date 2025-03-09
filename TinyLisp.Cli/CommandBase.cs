@@ -10,6 +10,7 @@ public class CommandBase
 
         vm.Define("defun", new Defun());
         vm.Define("deftest", new DefTest());
+        vm.Define("let", new Let());
         vm.DefineFunctionsFromType(typeof(Global));
 
         return vm;
