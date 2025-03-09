@@ -1,0 +1,38 @@
+name: CI
+
+on: { push: {} }
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Lint
+        run: dotnet format
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build CLI
+        run: dotnet publish /warnaserror TinyLisp.Cli -c Release -r linux-x64 --self-contained false
+
+      - name: Test
+        run: ./TinyLisp.Cli/bin/Release/net9.0/linux-x64/publish/TinyLisp.Cli test ./TinyLisp.Tests
+
