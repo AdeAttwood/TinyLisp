@@ -23,4 +23,21 @@ public class BoolValue : BaseValue
 
         throw new LispException($"Unable to parse '{value}' in to a boolean");
     }
+
+    public override bool Equals(object? obj)
+    {
+        var other = obj as BoolValue;
+
+        if (other == null)
+        {
+            return false;
+        }
+
+        return this.Value.Equals(other.Value);
+    }
+
+    public override int GetHashCode()
+    {
+        return this.Value.GetHashCode();
+    }
 }
