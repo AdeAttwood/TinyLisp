@@ -34,6 +34,14 @@ public static class Global
         return new NullValue();
     }
 
+    [LispFunction("if")]
+    public static BaseValue If(VM vm, BaseValue condition, BaseValue trueValue, BaseValue falseValue)
+    {
+        var value = Equals(new BoolValue { Value = true }, vm.Evaluate(condition)) ? trueValue : falseValue;
+
+        return vm.Evaluate(value);
+    }
+
     [LispFunction("=")]
     public static BoolValue Equals(VM vm, BaseValue left, BaseValue right)
     {
