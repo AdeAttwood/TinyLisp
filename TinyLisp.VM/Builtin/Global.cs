@@ -48,6 +48,12 @@ public static class Global
         return new BoolValue { Value = vm.Evaluate(left).Equals(vm.Evaluate(right)) };
     }
 
+    [LispFunction("!=")]
+    public static BoolValue NotEquals(VM vm, BaseValue left, BaseValue right)
+    {
+        return new BoolValue { Value = !vm.Evaluate(left).Equals(vm.Evaluate(right)) };
+    }
+
     [LispFunction("+")]
     public static NumberValue Add(NumberValue left, NumberValue right)
     {
