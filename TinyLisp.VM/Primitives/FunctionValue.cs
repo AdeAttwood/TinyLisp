@@ -50,6 +50,13 @@ public class FunctionValue : BaseValue
             convertedArgs.Add(argumentValue);
         }
 
-        return (BaseValue?)this.Callable.Invoke(null, convertedArgs.ToArray()) ?? new NullValue();
+        try
+        {
+            return (BaseValue?)this.Callable.Invoke(null, convertedArgs.ToArray()) ?? new NullValue();
+        }
+        catch (TargetInvocationException ex) when (ex.InnerException is not null)
+        {
+            throw ex.InnerException;
+        }
     }
 }
