@@ -39,9 +39,22 @@ public class FunctionValue : BaseValue
 
         for (int i = 0; i < requiredParams.Length; i++)
         {
-            var argumentValue = vm.Evaluate(listValue.GetValueAt(i + 1));
+            var argumentValue = listValue.GetValueAt(i + 1);
             var param = requiredParams[i];
 
+            // If the argument types don't match, try and evaluate it to see if
+            // they do after its evaluated. In some cases we can be specific
+            // and say we want a `BoolValue` in this case we want the list to
+            // be evaluated so it becomes one. In others we can prevent the by
+            // using a `BaseValue` this will prevent the list from getting
+            // evaluated, this is useful for things like if else when we don't
+            // want the else being evaluated if the condition is true.
+            if (!param.ParameterType.IsInstanceOfType(argumentValue))
+            {
+                argumentValue = vm.Evaluate(argumentValue);
+            }
+
+            // Now throw an error if the types don't match.
             if (!param.ParameterType.IsInstanceOfType(argumentValue))
             {
                 throw new Exception($"Argument type mismatch for parameter '{param.Name}' in function '{this.Name}' expected '{param.ParameterType}' got '{argumentValue}'");
