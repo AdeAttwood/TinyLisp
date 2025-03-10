@@ -9,6 +9,15 @@
   (assert (!= true false) "true and false are not equal")
   (assert (!= 1 "1") "Numbers and strings are not equal"))
 
+(deftest it-is-grater-than ()
+  (assert (> 10 5) "Numbers are grater than")
+  (assert (< 5 10) "Numbers are less than")
+
+  (assert (>= 10 5) "Numbers are grater than or equal to")
+  (assert (>= 10 10) "Numbers are grater than or equal to with equal values")
+  (assert (<= 5 10) "Numbers are less than")
+  (assert (<= 10 10) "Numbers are less than or equal to with equal values"))
+
 (deftest if-statements ()
   (assert (if true true false) "I mean... this should work")
   (assert (if false false true) "And it returns the else if its false")
