@@ -30,7 +30,7 @@ public class UserFunctionValue : BaseValue
 
         for (var i = 0; i < this.Parameters.Count; i++)
         {
-            vm.Define(this.Parameters[i].Value, listValue.GetValueAt(i + 1));
+            vm.Define(this.Parameters[i].Value, vm.Evaluate(listValue.GetValueAt(i + 1)));
         }
 
         BaseValue returnValue = new NullValue();

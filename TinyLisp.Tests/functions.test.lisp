@@ -10,3 +10,9 @@
     "This local function")
 
   (assert-eq "This local function" (some-local-function)))
+
+(deftest it-evaluates-the-list-before-using-it-as-a-function-param ()
+   (defun plus-one (a)
+     (+ a 1))
+
+   (assert-eq 10 (plus-one (+ 5 4))))
