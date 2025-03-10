@@ -54,6 +54,30 @@ public static class Global
         return new BoolValue { Value = !vm.Evaluate(left).Equals(vm.Evaluate(right)) };
     }
 
+    [LispFunction(">")]
+    public static BoolValue GraterThan(VM vm, NumberValue left, NumberValue right)
+    {
+        return new BoolValue { Value = left.Value > right.Value };
+    }
+
+    [LispFunction(">=")]
+    public static BoolValue GraterThanOrEqualTo(VM vm, NumberValue left, NumberValue right)
+    {
+        return new BoolValue { Value = left.Value >= right.Value };
+    }
+
+    [LispFunction("<")]
+    public static BoolValue LessThan(VM vm, NumberValue left, NumberValue right)
+    {
+        return new BoolValue { Value = left.Value < right.Value };
+    }
+
+    [LispFunction("<=")]
+    public static BoolValue LessThanOrEqualTo(VM vm, NumberValue left, NumberValue right)
+    {
+        return new BoolValue { Value = left.Value <= right.Value };
+    }
+
     [LispFunction("+")]
     public static NumberValue Add(NumberValue left, NumberValue right)
     {
