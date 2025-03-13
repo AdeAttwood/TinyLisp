@@ -11,13 +11,7 @@ public class ListValue : BaseValue
 
     public override BaseValue Evaluate(VM vm)
     {
-        var value = this.GetValueAt(0);
-        if (value.GetType() != typeof(SymbolValue))
-        {
-            throw new LispException($"Value `{value.Display()}` must be a symbol to be evaluated");
-        }
-
-        var symbolValue = (SymbolValue)value;
+        var symbolValue = this.GetValueAt<SymbolValue>(0);
         var type = vm.GetValue(symbolValue.Value);
         if (type == null)
         {
@@ -71,5 +65,16 @@ public class ListValue : BaseValue
         }
 
         throw new LispException($"Unhandled list item '{item.GetText()}'");
+    }
+
+    public T GetValueAt<T>(int index) where T : BaseValue
+    {
+        var value = this.GetValueAt(index);
+        if (typeof(T) != value.GetType())
+        {
+            throw new LispException($"Invalid type, expected '{typeof(T)}' but found '{value.GetType()}'");
+        }
+
+        return (T)value;
     }
 }

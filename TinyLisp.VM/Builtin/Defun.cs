@@ -17,28 +17,13 @@ public class Defun : BaseValue
             throw new LispException("defun has been called with a value that is not a list");
         }
 
-        var functionName = listValue.GetValueAt(1) as SymbolValue;
-        if (functionName == null)
-        {
-            throw new LispException("defun function names must be a symbol");
-        }
-
+        var functionName = listValue.GetValueAt<SymbolValue>(1);
         var function = this.CreateUserFunction(functionName.Value);
 
-        var parameters = listValue.GetValueAt(2) as ListValue;
-        if (parameters == null)
-        {
-            throw new LispException("defun was called with no parameters");
-        }
-
+        var parameters = listValue.GetValueAt<ListValue>(2);
         for (var i = 0; i < parameters.ItemCount(); i++)
         {
-            var parameter = parameters.GetValueAt(i) as SymbolValue;
-            if (parameter == null)
-            {
-                throw new LispException("defun all parameters must be symbol");
-            }
-
+            var parameter = parameters.GetValueAt<SymbolValue>(i);
             function.Parameters.Add(parameter);
         }
 

@@ -17,29 +17,15 @@ public class Let : BaseValue
             throw new LispException("let has been called with a value that is not a list");
         }
 
-        var bindings = listValue.GetValueAt(1) as ListValue;
-        if (bindings == null)
-        {
-            throw new LispException("let bindings must be a list");
-        }
+        var bindings = listValue.GetValueAt<ListValue>(1);
 
         vm.PushScope();
 
         for (var i = 0; i < bindings.ItemCount(); i++)
         {
-            var binding = bindings.GetValueAt(i) as ListValue;
-            if (binding == null)
-            {
-                throw new LispException($"let binding arguments must be a list found {bindings.GetValueAt(i)}");
-            }
-
-            var left = binding.GetValueAt(0);
+            var binding = bindings.GetValueAt<ListValue>(i);
+            var left = binding.GetValueAt<SymbolValue>(0);
             var right = binding.GetValueAt(1);
-
-            if (left.GetType() != typeof(SymbolValue))
-            {
-                throw new LispException("let binding left hand side must be a symbol");
-            }
 
             vm.Define(left.Display(), vm.Evaluate(right));
         }
