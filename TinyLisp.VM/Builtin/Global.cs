@@ -34,6 +34,13 @@ public static class Global
         return new NullValue();
     }
 
+    [LispFunction("defvar")]
+    public static NullValue DefVar(VM vm, SymbolValue variable, BaseValue value)
+    {
+        vm.Define(variable.Value, vm.Evaluate(value));
+        return new NullValue();
+    }
+
     [LispFunction("if")]
     public static BaseValue If(VM vm, BaseValue condition, BaseValue trueValue, BaseValue falseValue)
     {
