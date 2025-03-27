@@ -21,20 +21,41 @@ public class FunctionValue : BaseValue
             throw new LispException($"Function {this.Name} was called with a non list value type {value.GetType()}");
         }
 
+        var convertedArgs = this.GetConvertedArgs(vm, listValue);
+
+        try
+        {
+            return (BaseValue?)this.Callable.Invoke(null, convertedArgs.ToArray()) ?? new NullValue();
+        }
+        catch (TargetInvocationException ex) when (ex.InnerException is not null)
+        {
+            throw ex.InnerException;
+        }
+    }
+
+    private List<object> GetConvertedArgs(VM vm, ListValue listValue)
+    {
+        var convertedArgs = new List<object>();
+        if (this.Callable.GetParameters().First()?.ParameterType == typeof(VM))
+        {
+            convertedArgs.Add(vm);
+        }
+
         var requiredParams = this.Callable
             .GetParameters()
             .Where(param => param.ParameterType != typeof(VM))
             .ToArray();
 
+        if (requiredParams.First()?.ParameterType == typeof(ListValue))
+        {
+            convertedArgs.Add(listValue);
+
+            return convertedArgs;
+        }
+
         if (requiredParams.Length != listValue.ItemCount() - 1)
         {
             throw new Exception($"Function '{this.Name}' expects {requiredParams.Length} arguments, but {listValue.ItemCount() - 1} were provided.");
-        }
-
-        var convertedArgs = new List<object>();
-        if (this.Callable.GetParameters().First()?.ParameterType == typeof(VM))
-        {
-            convertedArgs.Add(vm);
         }
 
         for (int i = 0; i < requiredParams.Length; i++)
@@ -63,13 +84,6 @@ public class FunctionValue : BaseValue
             convertedArgs.Add(argumentValue);
         }
 
-        try
-        {
-            return (BaseValue?)this.Callable.Invoke(null, convertedArgs.ToArray()) ?? new NullValue();
-        }
-        catch (TargetInvocationException ex) when (ex.InnerException is not null)
-        {
-            throw ex.InnerException;
-        }
+        return convertedArgs;
     }
 }
