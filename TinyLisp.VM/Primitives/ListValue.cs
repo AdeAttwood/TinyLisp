@@ -28,7 +28,22 @@ public class ListValue : BaseValue
 
     public BaseValue GetValueAt(int index)
     {
-        var item = this.Value.listItems(index);
+        return this.GetValueFromListItem(this.Value.listItems(index));
+    }
+
+    public T GetValueAt<T>(int index) where T : BaseValue
+    {
+        var value = this.GetValueAt(index);
+        if (typeof(T) != value.GetType())
+        {
+            throw new LispException($"Invalid type, expected '{typeof(T)}' but found '{value.GetType()}'");
+        }
+
+        return (T)value;
+    }
+
+    private BaseValue GetValueFromListItem(TinyLispParser.ListItemsContext item)
+    {
         if (item == null)
         {
             return new NullValue();
@@ -64,17 +79,18 @@ public class ListValue : BaseValue
             return new ListValue { Value = listValue };
         }
 
-        throw new LispException($"Unhandled list item '{item.GetText()}'");
-    }
-
-    public T GetValueAt<T>(int index) where T : BaseValue
-    {
-        var value = this.GetValueAt(index);
-        if (typeof(T) != value.GetType())
+        var quotedList = item.quotedList();
+        if (quotedList != null)
         {
-            throw new LispException($"Invalid type, expected '{typeof(T)}' but found '{value.GetType()}'");
+            var array = new ArrayValue();
+            foreach (var listItem in quotedList.listItems())
+            {
+                array.Values.Add(this.GetValueFromListItem(listItem));
+            }
+
+            return array;
         }
 
-        return (T)value;
+        throw new LispException($"Unhandled list item '{item.GetText()}'");
     }
 }

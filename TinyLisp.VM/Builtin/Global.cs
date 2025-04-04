@@ -34,6 +34,12 @@ public static class Global
         return new NullValue();
     }
 
+    [LispFunction("get")]
+    public static BaseValue Get(ArrayValue value, NumberValue index)
+    {
+        return value.Values.ElementAtOrDefault(index.Value) ?? new NullValue();
+    }
+
     [LispFunction("defvar")]
     public static NullValue DefVar(VM vm, SymbolValue variable, BaseValue value)
     {
