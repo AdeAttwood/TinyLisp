@@ -11,6 +11,8 @@ public class CommandBase
         vm.Define("defun", new Defun());
         vm.Define("deftest", new DefTest());
         vm.DefineFunctionsFromType(typeof(Global));
+        vm.DefineFunctionsFromType(typeof(Arrays));
+        vm.DefineFunctionsFromType(typeof(FlowControl));
 
         return vm;
     }

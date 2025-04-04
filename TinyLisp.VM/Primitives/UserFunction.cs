@@ -43,4 +43,29 @@ public class UserFunctionValue : BaseValue
 
         return returnValue;
     }
+
+    public BaseValue EvaluateWithValue(VM vm, List<BaseValue> parameters)
+    {
+        if (this.Parameters.Count != parameters.Count)
+        {
+            throw new Exception($"Function '{this.Name}' expects {this.Parameters.Count} arguments, but {parameters.Count} were provided.");
+        }
+
+        vm.PushScope();
+
+        for (var i = 0; i < this.Parameters.Count; i++)
+        {
+            vm.Define(this.Parameters[i].Value, vm.Evaluate(parameters[i]));
+        }
+
+        BaseValue returnValue = new NullValue();
+        foreach (var item in this.Body)
+        {
+            returnValue = vm.Evaluate(item);
+        }
+
+        vm.PopScope();
+
+        return returnValue;
+    }
 }
