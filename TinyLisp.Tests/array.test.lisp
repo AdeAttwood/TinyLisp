@@ -10,5 +10,9 @@
     (assert-eq (get the-new-list 1) 3)
     (assert-eq (get the-new-list 2) 4)))
 
+(deftest array-map-with-closure ()
+  (let ((the-list (map global-list (fn (a) (+ a 1)))))
+    (assert-eq (get the-list 0) 2)))
+
 (deftest array-count ()
   (assert-eq (count global-list) 3))

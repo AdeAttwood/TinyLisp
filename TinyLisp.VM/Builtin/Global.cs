@@ -68,4 +68,23 @@ public static class Global
         return returnValue;
     }
 
+    [LispFunction("fn")]
+    public static UserFunctionValue Fn(VM vm, ListValue listValue)
+    {
+        var function = new UserFunctionValue { Name = Guid.NewGuid().ToString() };
+
+        var parameters = listValue.GetValueAt<ListValue>(1);
+        for (var i = 0; i < parameters.ItemCount(); i++)
+        {
+            var parameter = parameters.GetValueAt<SymbolValue>(i);
+            function.Parameters.Add(parameter);
+        }
+
+        for (var i = 2; i < listValue.ItemCount(); i++)
+        {
+            function.Body.Add(listValue.GetValueAt(i));
+        }
+
+        return function;
+    }
 }
