@@ -16,3 +16,7 @@
 
 (deftest array-count ()
   (assert-eq (count global-list) 3))
+
+(deftest array-reduce ()
+  (assert-eq (reduce global-list 0 (fn (acc a) (+ acc a))) 6))
+
