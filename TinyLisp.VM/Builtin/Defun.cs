@@ -14,7 +14,7 @@ public class Defun : BaseValue
         var listValue = value as ListValue;
         if (listValue == null)
         {
-            throw new LispException("defun has been called with a value that is not a list");
+            throw new LispException("defun has been called with a value that is not a list", value.Location);
         }
 
         var functionName = listValue.GetValueAt<SymbolValue>(1);

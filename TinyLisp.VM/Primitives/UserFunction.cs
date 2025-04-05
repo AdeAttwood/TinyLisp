@@ -18,12 +18,12 @@ public class UserFunctionValue : BaseValue
         var listValue = value as ListValue;
         if (listValue == null)
         {
-            throw new LispException($"function '{this.Name}' has been called with a value that is not a list");
+            throw new LispException($"function '{this.Name}' has been called with a value that is not a list", this.Location);
         }
 
         if (this.Parameters.Count != listValue.ItemCount() - 1)
         {
-            throw new Exception($"Function '{this.Name}' expects {this.Parameters.Count} arguments, but {listValue.ItemCount() - 1} were provided.");
+            throw new LispException($"Function '{this.Name}' expects {this.Parameters.Count} arguments, but {listValue.ItemCount() - 1} were provided.", this.Location);
         }
 
         vm.PushScope();
@@ -48,7 +48,7 @@ public class UserFunctionValue : BaseValue
     {
         if (this.Parameters.Count != parameters.Count)
         {
-            throw new Exception($"Function '{this.Name}' expects {this.Parameters.Count} arguments, but {parameters.Count} were provided.");
+            throw new LispException($"Function '{this.Name}' expects {this.Parameters.Count} arguments, but {parameters.Count} were provided.", this.Location);
         }
 
         vm.PushScope();

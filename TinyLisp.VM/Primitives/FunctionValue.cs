@@ -18,7 +18,7 @@ public class FunctionValue : BaseValue
         var listValue = (ListValue)value;
         if (listValue == null)
         {
-            throw new LispException($"Function {this.Name} was called with a non list value type {value.GetType()}");
+            throw new LispException($"Function {this.Name} was called with a non list value type {value.GetType()}", value.Location);
         }
 
         var convertedArgs = this.GetConvertedArgs(vm, listValue);
@@ -55,7 +55,7 @@ public class FunctionValue : BaseValue
 
         if (requiredParams.Length != listValue.ItemCount() - 1)
         {
-            throw new Exception($"Function '{this.Name}' expects {requiredParams.Length} arguments, but {listValue.ItemCount() - 1} were provided.");
+            throw new LispException($"Function '{this.Name}' expects {requiredParams.Length} arguments, but {listValue.ItemCount() - 1} were provided.", listValue.Location);
         }
 
         for (int i = 0; i < requiredParams.Length; i++)
@@ -78,7 +78,7 @@ public class FunctionValue : BaseValue
             // Now throw an error if the types don't match.
             if (!param.ParameterType.IsInstanceOfType(argumentValue))
             {
-                throw new Exception($"Argument type mismatch for parameter '{param.Name}' in function '{this.Name}' expected '{param.ParameterType}' got '{argumentValue}'");
+                throw new LispException($"Argument type mismatch for parameter '{param.Name}' in function '{this.Name}' expected '{param.ParameterType}' got '{argumentValue}'", argumentValue.Location);
             }
 
             convertedArgs.Add(argumentValue);

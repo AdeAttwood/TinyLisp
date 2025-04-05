@@ -8,22 +8,22 @@ public class VM
 {
     private readonly List<Scope> _scopes = new List<Scope> { new Scope() };
 
-    public BaseValue Evaluate(string code)
+    public BaseValue Evaluate(string code, string? fileName = null)
     {
         var lists = Parser.Parser.Parse(code);
 
         BaseValue returnValue = new NullValue();
         foreach (var list in lists)
         {
-            returnValue = this.Evaluate(list);
+            returnValue = this.Evaluate(list, fileName);
         }
 
         return returnValue;
     }
 
-    public BaseValue Evaluate(TinyLispParser.ListContext listContext)
+    public BaseValue Evaluate(TinyLispParser.ListContext listContext, string? fileName = null)
     {
-        var list = new ListValue { Value = listContext };
+        var list = new ListValue { Value = listContext, File = fileName };
         return list.Evaluate(this);
     }
 
@@ -32,7 +32,7 @@ public class VM
         return value switch
         {
             ListValue => value.Evaluate(this),
-            SymbolValue v => this.GetValue(v.Value) ?? throw new LispException($"Value {v.Value} is not defined in the current scope"),
+            SymbolValue v => this.GetValue(v.Value) ?? throw new LispException($"Value {v.Value} is not defined in the current scope", value.Location),
             _ => value,
         };
     }

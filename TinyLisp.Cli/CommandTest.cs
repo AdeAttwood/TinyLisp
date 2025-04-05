@@ -45,12 +45,12 @@ public class CommandTest : CommandBase
         var vm = this.BuildVm();
 
         var fileContent = File.ReadAllText(fileName);
-        vm.Evaluate(fileContent);
+        vm.Evaluate(fileContent, fileName);
 
         foreach (var test in vm.GetTestFunctions())
         {
             vm.PushScope();
-            var result = this.TestFunction(vm, test);
+            var result = this.TestFunction(vm, test, fileContent);
             vm.PopScope();
 
             if (result != null)
@@ -66,7 +66,7 @@ public class CommandTest : CommandBase
         }
     }
 
-    private TestFailure? TestFunction(VM.VM vm, TestFunctionValue function)
+    private TestFailure? TestFunction(VM.VM vm, TestFunctionValue function, string fileContent)
     {
         foreach (var item in function.Body)
         {
@@ -79,7 +79,7 @@ public class CommandTest : CommandBase
                 return new TestFailure
                 {
                     TestName = function.Name,
-                    Error = e.Message,
+                    Error = e.FullMessage(fileContent),
                 };
             }
         }

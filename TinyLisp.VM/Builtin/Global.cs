@@ -17,7 +17,7 @@ public static class Global
     {
         if (!item.Value)
         {
-            throw new LispException(description != null ? description.Value : "Assertion failed");
+            throw new LispException(description != null ? description.Value : "Assertion failed", item.Location);
         }
 
         return new NullValue();
@@ -28,7 +28,7 @@ public static class Global
     {
         if (!FlowControl.IsEqual(vm, left, right).Value)
         {
-            throw new LispException($"Failed asserting that {left.Display()} is equal to {right.Display()}");
+            throw new LispException($"Failed asserting that {left.Display()} is equal to {right.Display()}", left.Location);
         }
 
         return new NullValue();
